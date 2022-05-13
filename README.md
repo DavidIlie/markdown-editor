@@ -1,4 +1,8 @@
-# `davidapps-markdown`
+# Markdown Editor
+
+`yarn add @davidilie/markdown-editor`
+
+## Info
 
 This is an extended project on top of [https://github.com/nijat13/rich-markdown-editor](https://github.com/nijat13/rich-markdown-editor) which is extended on top of [https://github.com/outline/rich-markdown-editor](https://github.com/outline/rich-markdown-editor) and is in my opinion the perfect markdown editor for projects.
 
