@@ -1,3 +1,4 @@
+import React from "react";
 import Node from "./Node";
 
 export default abstract class ReactNode extends Node {
