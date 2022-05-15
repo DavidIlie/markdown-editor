@@ -1,13 +1,14 @@
-import { InputRule } from "prosemirror-inputrules";
-import { NodeSelection, Plugin, TextSelection } from "prosemirror-state";
-// import ImageZoom from "react-medium-image-zoom";
-import { Resizable } from "re-resizable";
+// once image resizing is implemented in S3, replace with this: https://github.com/nijat13/rich-markdown-editor/blob/main/src/nodes/Image.tsx
+
 import * as React from "react";
+import { DownloadIcon } from "outline-icons";
+import { Plugin, TextSelection, NodeSelection } from "prosemirror-state";
+import { InputRule } from "prosemirror-inputrules";
 import styled from "styled-components";
-import insertFiles from "../commands/insertFiles";
+import ImageZoom from "react-medium-image-zoom";
 import getDataTransferFiles from "../lib/getDataTransferFiles";
 import uploadPlaceholderPlugin from "../lib/uploadPlaceholder";
-import isVideo, { videoBlobFormat } from "../queries/isVideo";
+import insertFiles from "../commands/insertFiles";
 import Node from "./Node";
 
 /**
@@ -27,7 +28,7 @@ const uploadPlugin = (options) =>
             paste(view, event: ClipboardEvent): boolean {
                if (
                   (view.props.editable && !view.props.editable(view.state)) ||
-                  !options.uploadMedia
+                  !options.uploadImage
                ) {
                   return false;
                }
@@ -54,7 +55,7 @@ const uploadPlugin = (options) =>
             drop(view, event: DragEvent): boolean {
                if (
                   (view.props.editable && !view.props.editable(view.state)) ||
-                  !options.uploadMedia
+                  !options.uploadImage
                ) {
                   return false;
                }
@@ -116,91 +117,11 @@ const downloadImageNode = async (node) => {
    document.body.removeChild(link);
 };
 
-interface ISize {
-   width: number;
-   height: number;
-}
-
-interface IResizeProps {
-   props?: any;
-   size: ISize;
-}
-
-interface IImageBoxProps {
-   src: string;
-   alt: string;
-   title: string;
-   props: any;
-   readOnly?: boolean;
-   handleResize: (props: IResizeProps) => void;
-   defaultWidth: number;
-   defaultHeight: number;
-}
-
-const ImageBox: React.FC<IImageBoxProps> = ({
-   src,
-   alt,
-   title,
-   props,
-   handleResize,
-   defaultWidth,
-   defaultHeight,
-   readOnly,
-}) => {
-   const [width, setWidth] = React.useState(defaultWidth || 150);
-   const [height, setHeight] = React.useState(defaultHeight || 150);
-
-   const isVideoUrl = isVideo(src);
-
-   const image = isVideoUrl ? (
-      <video
-         style={{ width: "100%", height: "100%" }}
-         controls
-         src={videoBlobFormat(src)}
-      />
-   ) : (
-      <img
-         src={src}
-         alt={alt}
-         title={title}
-         className="personal-image"
-         style={{
-            width: "100%",
-            height: "100%",
-         }}
-      />
-   );
-   if (readOnly) {
-      return <div style={{ width, height }}>{image}</div>;
-   }
-
-   return (
-      <Resizable
-         size={{ width, height }}
-         onResizeStop={(e, direction, ref, d) => {
-            setWidth(width + d.width);
-            setHeight(height + d.height);
-
-            handleResize({
-               props,
-               size: {
-                  width: width + d.width,
-                  height: height + d.height,
-               },
-            });
-         }}
-      >
-         {image}
-      </Resizable>
-   );
-};
-
 export default class Image extends Node {
    get name() {
       return "image";
    }
 
-   //@ts-ignore
    get schema() {
       return {
          inline: true,
@@ -213,12 +134,6 @@ export default class Image extends Node {
                default: null,
             },
             title: {
-               default: null,
-            },
-            width: {
-               default: null,
-            },
-            height: {
                default: null,
             },
          },
@@ -266,17 +181,7 @@ export default class Image extends Node {
                {
                   class: className,
                },
-               [
-                  "img",
-                  {
-                     ...node.attrs,
-                     style: {
-                        width: node.attrs.width,
-                        height: node.attrs.height,
-                     },
-                     contentEditable: false,
-                  },
-               ],
+               ["img", { ...node.attrs, contentEditable: false }],
                ["p", { class: "caption" }, 0],
             ];
          },
@@ -332,10 +237,11 @@ export default class Image extends Node {
 
    handleSelect = ({ getPos }) => (event) => {
       event.preventDefault();
+
       const { view } = this.editor;
       const $pos = view.state.doc.resolve(getPos());
       const transaction = view.state.tr.setSelection(new NodeSelection($pos));
-      return view.dispatch(transaction);
+      view.dispatch(transaction);
    };
 
    handleDownload = ({ node }) => (event) => {
@@ -344,48 +250,35 @@ export default class Image extends Node {
       downloadImageNode(node);
    };
 
-   handleResize = async ({ props, size }: IResizeProps) => {
-      const {
-         view: { dispatch, state },
-      } = this.editor;
-      const nodeAttrs = props?.node?.attrs || {};
-      const attrs = {
-         ...nodeAttrs,
-         title: null,
-         width: size.width,
-         height: size.height,
-      };
-      const { selection } = state;
-      dispatch(state.tr.setNodeMarkup(selection.from, undefined, attrs));
-      return true;
-   };
-
    component = (props) => {
-      const { isSelected } = props;
-      const { alt, src, title, layoutClass, width, height } = props.node.attrs;
+      const { theme, isSelected } = props;
+      const { alt, src, title, layoutClass } = props.node.attrs;
       const className = layoutClass ? `image image-${layoutClass}` : "image";
 
       return (
          <div contentEditable={false} className={className}>
             <ImageWrapper
                className={isSelected ? "ProseMirror-selectednode" : ""}
-               onMouseDown={this.handleSelect(props)}
+               onClick={this.handleSelect(props)}
             >
-               {/* <Button>
-            <DownloadIcon
-              color="currentColor"
-              onClick={this.handleDownload(props)}
-            />
-          </Button> */}
-               <ImageBox
-                  src={src}
-                  alt={alt}
-                  title={title}
-                  props={props}
-                  readOnly={this.editor.props.readOnly}
-                  defaultWidth={width}
-                  defaultHeight={height}
-                  handleResize={this.handleResize}
+               <Button>
+                  <DownloadIcon
+                     color="currentColor"
+                     onClick={this.handleDownload(props)}
+                  />
+               </Button>
+               <ImageZoom
+                  image={{
+                     src,
+                     alt,
+                     title,
+                  }}
+                  defaultStyles={{
+                     overlay: {
+                        backgroundColor: theme.background,
+                     },
+                  }}
+                  shouldRespectMaxDimension
                />
             </ImageWrapper>
             <Caption
@@ -410,12 +303,6 @@ export default class Image extends Node {
          state.esc((node.attrs.alt || "").replace("\n", "") || "") +
          "](" +
          state.esc(node.attrs.src);
-
-      const { width, height } = node.attrs;
-      if (width || height) {
-         markdown += `?=${width}${height ? "x" + height : ""}`;
-      }
-
       if (node.attrs.layoutClass) {
          markdown += ' "' + state.esc(node.attrs.layoutClass) + '"';
       } else if (node.attrs.title) {
@@ -429,28 +316,9 @@ export default class Image extends Node {
       return {
          node: "image",
          getAttrs: (token) => {
-            let src = token.attrGet("src");
-            const possibleImageSizeAttrs = src.split("?=");
-            let width, height;
-
-            if (possibleImageSizeAttrs[1]) {
-               const widthStringValue = possibleImageSizeAttrs[1].split("x");
-               width = widthStringValue[0].replace(/\D/g, "");
-               height = widthStringValue[1].replace(/\D/g, "");
-
-               if (src && width) {
-                  src = src.replace(`${width}`, "");
-               }
-               if (src && height) {
-                  src = src.replace(`x${height}`, "");
-               }
-            }
-
             return {
-               src: possibleImageSizeAttrs[0],
+               src: token.attrGet("src"),
                alt: (token.children[0] && token.children[0].content) || null,
-               width: width ? parseFloat(width) : null,
-               height: height ? parseFloat(height) : null,
                ...getLayoutAndTitle(token.attrGet("title")),
             };
          },
@@ -493,6 +361,38 @@ export default class Image extends Node {
             const { selection } = state;
             dispatch(state.tr.setNodeMarkup(selection.from, undefined, attrs));
             return true;
+         },
+         replaceImage: () => (state) => {
+            const { view } = this.editor;
+            const {
+               uploadMedia,
+               onImageUploadStart,
+               onImageUploadStop,
+               onShowToast,
+            } = this.editor.props;
+
+            if (!uploadMedia) {
+               throw new Error(
+                  "uploadImage prop is required to replace images"
+               );
+            }
+
+            // create an input element and click to trigger picker
+            const inputElement = document.createElement("input");
+            inputElement.type = "file";
+            inputElement.accept = "image/*";
+            inputElement.onchange = (event: Event) => {
+               const files = getDataTransferFiles(event);
+               insertFiles(view, event, state.selection.from, files, {
+                  uploadMedia,
+                  onImageUploadStart,
+                  onImageUploadStop,
+                  onShowToast,
+                  dictionary: this.options.dictionary,
+                  replaceExisting: true,
+               });
+            };
+            inputElement.click();
          },
          alignCenter: () => (state, dispatch) => {
             const attrs = { ...state.selection.node.attrs, layoutClass: null };
@@ -557,26 +457,12 @@ const Button = styled.button`
    cursor: pointer;
    opacity: 0;
    transition: opacity 100ms ease-in-out;
-
    &:active {
       transform: scale(0.98);
    }
-
    &:hover {
       color: ${(props) => props.theme.text};
       opacity: 1;
-   }
-`;
-
-const ImageWrapper = styled.span`
-   line-height: 0;
-   display: inline-block;
-   position: relative;
-
-   &:hover {
-      ${Button} {
-         opacity: 0.9;
-      }
    }
 `;
 
@@ -596,10 +482,26 @@ const Caption = styled.p`
    resize: none;
    user-select: text;
    cursor: text;
-
+   &:empty:not(:focus) {
+      visibility: hidden;
+   }
    &:empty:before {
       color: ${(props) => props.theme.placeholder};
       content: attr(data-caption);
       pointer-events: none;
+   }
+`;
+
+const ImageWrapper = styled.span`
+   line-height: 0;
+   display: inline-block;
+   position: relative;
+   &:hover {
+      ${Button} {
+         opacity: 0.9;
+      }
+   }
+   &.ProseMirror-selectednode + ${Caption} {
+      visibility: visible;
    }
 `;
