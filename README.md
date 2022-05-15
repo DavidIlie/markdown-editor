@@ -12,15 +12,15 @@ Most functionalities are the same, I just modified some margins and type errors 
 
 ## Usage
 
-You can see the vercel page [here](#) or see a basic example below:
+You can see the storybook [here](https://markdown-editor.davidapps.dev) or see a basic example below:
 
 ```tsx
 import React, { useState } from "react";
+
 import Editor from "@davidilie/markdown-editor";
 
 const Component: React.FC = () => {
    const [val, setVal] = useState("Hello World!");
-
    return (
       <Editor defaultValue={val} onChange={(markdown) => setVal(markdown())} />
    );
