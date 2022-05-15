@@ -1,6 +1,6 @@
 # Markdown Editor
 
-`yarn add @davidilie/markdown-editor`
+`yarn add david-markdown-editor`
 
 ## Info
 
