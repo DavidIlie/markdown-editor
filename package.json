@@ -1,6 +1,6 @@
 {
    "name": "david-markdown-editor",
-   "version": "1.0.1",
+   "version": "1.0.2",
    "main": "dist/index.js",
    "typings": "dist/index.d.ts",
    "scripts": {
@@ -113,14 +113,14 @@
       "yargs-parser": "^15.0.1"
    },
    "author": "Tom Moor <tom.moor@gmail.com>",
-   "description": "modified version of the [rich-markdown-editor](https://github.com/outline/rich-markdown-editor)",
+   "description": "modified version of the [rich-markdown-editor](https://github.com/outline/rich-markdown-editor) library.",
    "repository": {
       "type": "git",
-      "url": "git+https://github.com/WorklogES/rich-markdown-editor.git"
+      "url": "git+https://github.com/DavidIlie/markdown-editor.git"
    },
    "license": "ISC",
    "bugs": {
-      "url": "https://github.com/WorklogES/rich-markdown-editor/issues"
+      "url": "https://github.com/DavidIlie/markdown-editor/issues"
    },
-   "homepage": "https://github.com/WorklogES/rich-markdown-editor#readme"
+   "homepage": "https://github.com/DavidIlie/markdown-editor#readme"
 }

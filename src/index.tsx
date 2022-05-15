@@ -164,9 +164,9 @@ type Step = {
    slice?: Slice;
 };
 
-class RichMarkdownEditor extends React.PureComponent<Props, State> {
+class RichMarkdownEditor extends React.PureComponent<Partial<Props>, State> {
    static defaultProps = {
-      defaultValue: "",
+      defaultValue: "Start writing…",
       dir: "auto",
       placeholder: "Write something nice…",
       onImageUploadStart: () => {
@@ -410,6 +410,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                }
                return true;
             }),
+            //@ts-ignore
             ...this.props.extensions,
          ],
          this
@@ -500,6 +501,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
    }
 
    createState(value?: string) {
+      //@ts-ignore
       const doc = this.createDocument(value || this.props.defaultValue);
 
       return EditorState.create({
@@ -764,6 +766,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   />
                   {!readOnly && this.view && (
                      <React.Fragment>
+                        {/*
+                                 //@ts-ignore */}
                         <SelectionToolbar
                            view={this.view}
                            dictionary={dictionary}
@@ -777,6 +781,8 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                            onCreateLink={this.props.onCreateLink}
                            tooltip={tooltip}
                         />
+                        {/*
+                                 //@ts-ignore */}
                         <LinkToolbar
                            view={this.view}
                            dictionary={dictionary}
@@ -812,6 +818,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                            onImageUploadStart={this.props.onImageUploadStart}
                            onImageUploadStop={this.props.onImageUploadStop}
                            onShowToast={this.props.onShowToast}
+                           //@ts-ignore
                            embeds={this.props.embeds}
                         />
                      </React.Fragment>
