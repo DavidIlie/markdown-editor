@@ -1,6 +1,6 @@
 # Markdown Editor
 
-`yarn add david-markdown-editor`
+`yarn add @davidilie/markdown-editor`
 
 ## Info
 
@@ -12,4 +12,19 @@ Most functionalities are the same, I just modified some margins and type errors 
 
 ## Usage
 
-TBA
+You can see the vercel page [here](#) or see a basic example below:
+
+```tsx
+import React, { useState } from "react";
+import Editor from "@davidilie/markdown-editor";
+
+const Component: React.FC = () => {
+   const [val, setVal] = useState("Hello World!");
+
+   return (
+      <Editor defaultValue={val} onChange={(markdown) => setVal(markdown())} />
+   );
+};
+
+export default Component;
+```

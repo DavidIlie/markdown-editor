@@ -79,7 +79,7 @@ export { parser, renderToHtml, schema, serializer } from "./server";
 
 export const theme = lightTheme;
 
-export type Props = {
+export type PropsBase = {
    id?: string;
    value?: string;
    defaultValue: string;
@@ -149,6 +149,8 @@ export type Props = {
    className?: string;
    style?: React.CSSProperties;
 };
+
+export interface Props extends Partial<PropsBase> {}
 
 type State = {
    isRTL: boolean;

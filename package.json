@@ -1,6 +1,6 @@
 {
-   "name": "david-markdown-editor",
-   "version": "1.0.4",
+   "name": "@davidilie/markdown-editor",
+   "version": "1.0.1",
    "main": "dist/index.js",
    "typings": "dist/index.d.ts",
    "scripts": {
@@ -122,5 +122,9 @@
    "bugs": {
       "url": "https://github.com/DavidIlie/markdown-editor/issues"
    },
-   "homepage": "https://github.com/DavidIlie/markdown-editor#readme"
+   "homepage": "https://github.com/DavidIlie/markdown-editor#readme",
+   "keywords": [
+      "editor",
+      "outline"
+   ]
 }
