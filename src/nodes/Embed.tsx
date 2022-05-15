@@ -63,6 +63,7 @@ export default class Embed extends Node {
       let matches = hit ? hit.matches : undefined;
 
       if (!Component) {
+         //@ts-ignore
          for (const embed of embeds) {
             const m = embed.matcher(node.attrs.href);
             if (m) {
