@@ -14,6 +14,33 @@ Most functionalities are the same, I just modified some margins and type errors 
 
 You can see the storybook [here](https://markdown-editor.davidapps.dev) or see a basic example below:
 
+### Next.JS
+
+```tsx
+import dynamic from "next/dynamic";
+import React, { useState, Suspense } from "react";
+
+const Editor = dynamic(() => import("@davidilie/markdown-editor"), {
+   ssr: false,
+});
+
+const Component: React.FC = () => {
+   const [val, setVal] = useState("Hello World!");
+   return (
+      <Suspense fallback={<p>Loading...</p>}>
+         <Editor
+            defaultValue={val}
+            onChange={(markdown) => setVal(markdown())}
+         />
+      </Suspense>
+   );
+};
+
+export default Component;
+```
+
+### create-react-app
+
 ```tsx
 import React, { useState } from "react";
 
