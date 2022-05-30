@@ -751,7 +751,6 @@ class RichMarkdownEditor extends React.PureComponent<Partial<Props>, State> {
          <Flex
             onKeyDown={onKeyDown}
             style={style}
-            className={className}
             align="flex-start"
             justify="center"
             dir={dir}
@@ -765,6 +764,7 @@ class RichMarkdownEditor extends React.PureComponent<Partial<Props>, State> {
                      readOnly={readOnly}
                      readOnlyWriteCheckboxes={readOnlyWriteCheckboxes}
                      ref={(ref) => (this.element = ref)}
+                     className={className}
                   />
                   {!readOnly && this.view && (
                      <React.Fragment>

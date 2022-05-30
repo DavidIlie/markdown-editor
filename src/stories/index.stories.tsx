@@ -5,38 +5,38 @@ import { Props } from "..";
 import Editor from "./index";
 
 export default {
-  title: "Editor",
-  component: Editor,
-  argTypes: {
-    value: { control: "text" },
-    readOnly: { control: "boolean" },
-    onSave: { action: "save" },
-    onCancel: { action: "cancel" },
-    onClickHashtag: { action: "hashtag clicked" },
-    onClickLink: { action: "link clicked" },
-    onHoverLink: { action: "link hovered" },
-    onShowToast: { action: "toast" },
-    onFocus: { action: "focused" },
-    onBlur: { action: "blurred" },
-    disableExtensions: { control: "array" },
-  },
-  args: {
-    disableExtensions: [],
-  },
+   title: "Editor",
+   component: Editor,
+   argTypes: {
+      value: { control: "text" },
+      readOnly: { control: "boolean" },
+      onSave: { action: "save" },
+      onCancel: { action: "cancel" },
+      onClickHashtag: { action: "hashtag clicked" },
+      onClickLink: { action: "link clicked" },
+      onHoverLink: { action: "link hovered" },
+      onShowToast: { action: "toast" },
+      onFocus: { action: "focused" },
+      onBlur: { action: "blurred" },
+      disableExtensions: { control: "array" },
+   },
+   args: {
+      disableExtensions: [],
+   },
 } as Meta;
 
 const Template: Story<Props> = (args) => <Editor {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  defaultValue: `# Welcome
+   defaultValue: `# Welcome
 
 Just an easy to use **Markdown** editor with \`slash commands\``,
 };
 
 export const Emoji = Template.bind({});
 Emoji.args = {
-  defaultValue: `# Emoji
+   defaultValue: `# Emoji
 
 \
 :1st_place_medal:
@@ -45,8 +45,8 @@ Emoji.args = {
 
 export const TemplateDoc = Template.bind({});
 TemplateDoc.args = {
-  template: true,
-  defaultValue: `# Template
+   template: true,
+   defaultValue: `# Template
 
 This document acts as a "template document", it's possible to insert placeholder marks that can be filled in later by others in a non-template document.
 
@@ -56,7 +56,7 @@ This document acts as a "template document", it's possible to insert placeholder
 
 export const Headings = Template.bind({});
 Headings.args = {
-  defaultValue: `# Heading 1
+   defaultValue: `# Heading 1
 
 ## Heading 2
 
@@ -67,7 +67,7 @@ Headings.args = {
 
 export const Lists = Template.bind({});
 Lists.args = {
-  defaultValue: `# Lists
+   defaultValue: `# Lists
 
 - An
 - Unordered
@@ -81,7 +81,7 @@ Lists.args = {
 
 export const Blockquotes = Template.bind({});
 Blockquotes.args = {
-  defaultValue: `# Block quotes
+   defaultValue: `# Block quotes
 
 > Quotes are another way to callout text within a larger document
 > They are often used to incorrectly attribute words to historical figures`,
@@ -89,7 +89,7 @@ Blockquotes.args = {
 
 export const Tables = Template.bind({});
 Tables.args = {
-  defaultValue: `# Tables
+   defaultValue: `# Tables
 
 Simple tables with alignment and row/col editing are supported, they can be inserted from the slash menu
 
@@ -103,7 +103,7 @@ Simple tables with alignment and row/col editing are supported, they can be inse
 
 export const Marks = Template.bind({});
 Marks.args = {
-  defaultValue: `This document shows the variety of marks available, most can be accessed through the formatting menu by selecting text or by typing out the Markdown manually.
+   defaultValue: `This document shows the variety of marks available, most can be accessed through the formatting menu by selecting text or by typing out the Markdown manually.
 
 \\
 **bold**
@@ -119,7 +119,7 @@ __underline__
 
 export const Code = Template.bind({});
 Code.args = {
-  defaultValue: `# Code
+   defaultValue: `# Code
 
 \`\`\`html
 <html>
@@ -131,7 +131,7 @@ Code.args = {
 
 export const Notices = Template.bind({});
 Notices.args = {
-  defaultValue: `# Notices
+   defaultValue: `# Notices
 
 There are three types of editable notice blocks that can be used to callout information:
 
@@ -152,30 +152,33 @@ Warning
 
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
-  readOnly: true,
-  defaultValue: `# Read Only
+   readOnly: true,
+   defaultValue: `# Read Only
   
-The content of this editor cannot be edited`,
+The content of this editor cannot be edited
+
+![Photo caption](https://upload.wikimedia.org/wikipedia/commons/0/06/Davide-ragusa-gcDwzUGuUoI-unsplash.jpg?=243x295)
+`,
 };
 
 export const MaxLength = Template.bind({});
 MaxLength.args = {
-  maxLength: 100,
-  defaultValue: `This document has a max length of 100 characters. Once reached typing is prevented`,
+   maxLength: 100,
+   defaultValue: `This document has a max length of 100 characters. Once reached typing is prevented`,
 };
 
 export const Checkboxes = Template.bind({});
 Checkboxes.args = {
-  defaultValue: `
+   defaultValue: `
 - [x] done
 - [ ] todo`,
 };
 
 export const ReadOnlyWriteCheckboxes = Template.bind({});
 ReadOnlyWriteCheckboxes.args = {
-  readOnly: true,
-  readOnlyWriteCheckboxes: true,
-  defaultValue: `A read-only editor with the exception that checkboxes remain toggleable, like GitHub
+   readOnly: true,
+   readOnlyWriteCheckboxes: true,
+   defaultValue: `A read-only editor with the exception that checkboxes remain toggleable, like GitHub
 
 \\
 - [x] done
@@ -184,53 +187,53 @@ ReadOnlyWriteCheckboxes.args = {
 
 export const Persisted = Template.bind({});
 Persisted.args = {
-  defaultValue:
-    localStorage.getItem("saved") ||
-    `# Persisted
+   defaultValue:
+      localStorage.getItem("saved") ||
+      `# Persisted
   
 The contents of this editor are persisted to local storage on change (edit and reload)`,
-  onChange: debounce((value) => {
-    const text = value();
-    localStorage.setItem("saved", text);
-  }, 250),
+   onChange: debounce((value) => {
+      const text = value();
+      localStorage.setItem("saved", text);
+   }, 250),
 };
 
 export const Placeholder = Template.bind({});
 Placeholder.args = {
-  defaultValue: "",
-  placeholder: "This is a custom placeholder…",
+   defaultValue: "",
+   placeholder: "This is a custom placeholder…",
 };
 
 export const Media = Template.bind({});
 Media.args = {
-  defaultValue: `# Media
+   defaultValue: `# Media
 ![Photo caption](https://upload.wikimedia.org/wikipedia/commons/0/06/Davide-ragusa-gcDwzUGuUoI-unsplash.jpg?=243x295)
 ![Video caption](https://ak.picdn.net/shutterstock/videos/1044255715/preview/stock-footage-person-signing-important-document-camera-following-tip-of-the-pen-as-it-signs-crucial-business.webm?=243x295)`,
-  onChange: (fn) => {
-    console.log("VALUE: ", fn());
-  },
+   onChange: (fn) => {
+      console.log("VALUE: ", fn());
+   },
 };
 
 export const Focused = Template.bind({});
 Focused.args = {
-  autoFocus: true,
-  defaultValue: `# Focused
+   autoFocus: true,
+   defaultValue: `# Focused
   
   This editor starts in focus`,
 };
 
 export const Dark = Template.bind({});
 Dark.args = {
-  dark: true,
-  defaultValue: `# Dark
+   dark: true,
+   defaultValue: `# Dark
 
 There's a customizable dark theme too`,
 };
 
 export const RTL = Template.bind({});
 RTL.args = {
-  dir: "rtl",
-  defaultValue: `# خوش آمدید
+   dir: "rtl",
+   defaultValue: `# خوش آمدید
 
 متن نمونه برای نمایش پشتیبانی از زبان‌های RTL نظیر فارسی، عربی، عبری و ...
 
